@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720">
+  <rect width="1280" height="1280" fill="black"/>
+  <text x="640" y="260" fill="#db00ac" font-size="56" font-family="Arial" font-weight="bold" text-anchor="middle">No Skid Certificate</text>  
+  <text x="640" y="360" fill="white" font-size="40" font-family="Arial" font-weight="bold" text-anchor="middle">|&gt; {{USER}} &lt;|</text>
+  <text x="640" y="450" fill="white" font-size="32" font-family="Arial" font-style="italic" text-anchor="middle">This person knows what they're talking about. ({{PERCENT}}%)</text>
+  <line x1="40" y1="650" x2="1240" y2="650" stroke="#db00ac" stroke-width="4"/>
+  <text x="960" y="694" fill="white" font-size="32" font-family="Arial" text-anchor="end">Delivered by DPIP.lol</text>
+  <text x="320" y="694" fill="white" font-size="32" font-family="Arial" text-anchor="start">Date: {{DATE}}</text>
+  <text x="1160" y="140" fill="white" font-size="32" font-family="Arial" text-anchor="end">N°{{CERTNB}}</text>
+</svg>
