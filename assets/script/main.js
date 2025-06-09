@@ -220,12 +220,30 @@ function displaySkins(skins) {
         skinCard.onclick = () => selectSkin(skin, skinCard);
 
         skinCard.innerHTML = `
-                    <img src="preview/${skin}.png" alt="${skin}" class="skin-preview" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlkYTJhOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIFByZXZpZXc8L3RleHQ+PC9zdmc+'">
-                    <div class="skin-name">${skin}</div>
-                `;
+            <img src="preview/${skin}.png" alt="${skin}" class="skin-preview" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzlkYTJhOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIFByZXZpZXc8L3RleHQ+PC9zdmc+'">
+            <div class="skin-name">${skin}</div>
+        `;
 
         skinsGrid.appendChild(skinCard);
     });
+
+    const contributeCard = document.createElement('div');
+    contributeCard.className = 'skin-card contribute-card';
+    contributeCard.onclick = () => {
+        window.open('https://github.com/douxxtech/skins.noskid.today/blob/main/contribute.md', '_blank');
+    };
+
+    contributeCard.innerHTML = `
+        <div class="contribute-content">
+            <i class="ri-add-circle-line contribute-icon"></i>
+            <div class="contribute-text">
+                <div class="contribute-title">Add Your Own Skin</div>
+                <div class="contribute-subtitle">Contribute to the project</div>
+            </div>
+        </div>
+    `;
+
+    skinsGrid.appendChild(contributeCard);
 }
 
 function selectSkin(skin, element) {
