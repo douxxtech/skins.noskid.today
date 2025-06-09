@@ -4,9 +4,6 @@ const fileSelected = document.getElementById('fileSelected');
 const fileName = document.getElementById('fileName');
 const fileSize = document.getElementById('fileSize');
 const removeFile = document.getElementById('removeFile');
-const downloadBtn = document.getElementById('downloadBtn');
-const loading = document.getElementById('loading');
-const result = document.getElementById('result');
 const skinsGrid = document.getElementById('skinsGrid');
 const skinsLoading = document.getElementById('skinsLoading');
 
@@ -21,7 +18,6 @@ uploadArea.addEventListener('dragleave', handleDragLeave);
 uploadArea.addEventListener('drop', handleDrop);
 fileInput.addEventListener('change', handleFileSelect);
 removeFile.addEventListener('click', clearFile);
-downloadBtn.addEventListener('click', handleDownload);
 
 function handleDragOver(e) {
     e.preventDefault();
@@ -70,7 +66,8 @@ async function handleFile(file) {
         uploadArea.style.display = 'none';
         fileSelected.style.display = 'flex';
 
-        checkDownloadReady();
+        showProgress();
+
     } catch (error) {
         showError(error);
     }
@@ -81,13 +78,9 @@ function clearFile() {
     fileSelected.style.display = 'none';
     fileInput.value = '';
     certificateKey = null;
-    hideResult();
-    checkDownloadReady();
+    showProgress();
 }
 
-function checkDownloadReady() {
-    downloadBtn.disabled = !(certificateKey && selectedSkin);
-}
 
 function formatFileSize(bytes) {
     if (bytes === 0) return '0 Bytes';
@@ -253,15 +246,11 @@ function selectSkin(skin, element) {
 
     element.classList.add('selected');
     selectedSkin = skin;
-    checkDownloadReady();
+    showProgress();
 }
 
 async function handleDownload() {
     if (!certificateKey || !selectedSkin) return;
-
-    downloadBtn.style.display = 'none';
-    loading.style.display = 'block';
-    hideResult();
 
     try {
         const response = await fetch(`download?skin=${encodeURIComponent(selectedSkin)}&key=${encodeURIComponent(certificateKey)}`);
@@ -283,10 +272,10 @@ async function handleDownload() {
             a.style.display = 'none';
             a.href = url;
             a.download = filename;
-            
+
             document.body.appendChild(a);
             a.click();
-            
+
             setTimeout(() => {
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(url);
@@ -305,23 +294,87 @@ async function handleDownload() {
     }
 }
 
+function getStep() {
+    if (certificateKey && selectedSkin) {
+        return "Step 3/3";
+    } else if (certificateKey && !selectedSkin) {
+        return "Step 2/3";
+    } else if (!certificateKey && selectedSkin) {
+        return "Step 2/3";
+    } else if (!certificateKey && !selectedSkin) {
+        return "Step 1/3";
+    }
+}
+
+function getComment() {
+    if (certificateKey && selectedSkin) {
+        return "Download your custom certificate.";
+    } else if (certificateKey && !selectedSkin) {
+        return "Select a skin for your certificate.";
+    } else if (!certificateKey && selectedSkin) {
+        return "Upload your noskid certificate.";
+    } else if (!certificateKey && !selectedSkin) {
+        return "Upload your noskid certificate.";
+    }
+}
+
+function showProgress() {
+
+    if (getStep() === "Step 3/3") {
+        updateStatusBox({
+            type: 'info',
+            title: getStep(),
+            description: getComment(),
+            buttonHtml: '<i class="ri-download-line"></i>',
+            buttonAction: handleDownload
+        });
+    } else {
+        updateStatusBox({
+            type: 'info',
+            title: getStep(),
+            description: getComment()
+        });
+    }
+}
 
 function showSuccess() {
-    result.className = 'result success';
-    result.style.display = 'block';
-    result.querySelector('i').className = 'ri-checkbox-circle-line';
-    result.querySelector('h3').textContent = 'Certificate Generated!';
-    result.querySelector('p').textContent = 'Your custom certificate has been downloaded successfully.';
+    updateStatusBox({
+        type: 'success',
+        title: 'Success',
+        description: 'Your certificate has been downloaded successfully.',
+    });
 }
 
 function showError(message) {
-    result.className = 'result error';
-    result.style.display = 'block';
-    result.querySelector('i').className = 'ri-error-warning-line';
-    result.querySelector('h3').textContent = 'Error';
-    result.querySelector('p').textContent = message;
+    updateStatusBox({
+    type: 'error',
+    title: 'Error',
+    description: message
+});
 }
 
-function hideResult() {
-    result.style.display = 'none';
+
+function updateStatusBox({ type = 'info', title = '', description = '', buttonHtml = '', buttonAction = null }) {
+    const box = document.getElementById('statusBox');
+    const titleEl = document.getElementById('statusTitle');
+    const descEl = document.getElementById('statusDescription');
+    const buttonEl = document.getElementById('statusButton');
+
+
+    box.classList.remove('info', 'success', 'warning', 'error');
+    box.classList.add(type);
+
+    titleEl.textContent = title;
+    descEl.textContent = description;
+
+    if (buttonHtml && buttonEl) {
+        buttonEl.innerHTML = buttonHtml;
+        buttonEl.style.display = 'inline-block';
+        buttonEl.onclick = buttonAction || (() => {});
+    } else if(buttonEl) {
+        buttonEl.style.display = 'none';
+    }
 }
+
+
+showProgress();

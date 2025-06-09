@@ -233,83 +233,6 @@ body {
     }
 }
 
-.download-btn {
-    background: #2563eb;
-    color: white;
-    border: none;
-    padding: 14px 32px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    opacity: 0.5;
-    pointer-events: none;
-    margin: 0 auto;
-    display: block;
-    width: fit-content;
-}
-
-.download-btn:enabled {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.download-btn:enabled:hover {
-    background: #1d4ed8;
-    transform: translateY(-1px);
-}
-
-.result {
-    display: none;
-    text-align: center;
-    padding: 32px;
-    background: #f0f9ff;
-    border-radius: 12px;
-    border: 1px solid #bae6fd;
-    margin-top: 24px;
-}
-
-.result.success {
-    background: #f0fdf4;
-    border-color: #bbf7d0;
-}
-
-.result.error {
-    background: #fef2f2;
-    border-color: #fecaca;
-}
-
-.result i {
-    font-size: 48px;
-    margin-bottom: 16px;
-}
-
-.result.success i {
-    color: #10b981;
-}
-
-.result.error i {
-    color: #ef4444;
-}
-
-.result h3 {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.result.success h3 {
-    color: #065f46;
-}
-
-.result.error h3 {
-    color: #991b1b;
-}
-
 .skins-loading {
     text-align: center;
     padding: 40px;
@@ -362,6 +285,89 @@ body {
     color: #0056b3;
     transform: scale(1.1);
 }
+
+.status-box {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  max-width: 90%;
+  padding: 12px 20px;
+  border-radius: 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  color: #fff;
+  font-family: sans-serif;
+  transition: background-color 0.4s ease, opacity 0.3s ease;
+  z-index: 10000;
+}
+
+.status-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.status-text {
+  text-align: left;
+}
+
+.status-box h3 {
+  margin: 0;
+  font-size: 1em;
+}
+
+.status-box {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  max-width: 90%;
+  padding: 12px 20px;
+  border-radius: 12px;
+  color: #fff;
+  font-family: sans-serif;
+  transition: background-color 0.4s ease, opacity 0.3s ease;
+  z-index: 10000;
+  background-clip: padding-box;
+}
+
+.status-box button {
+  padding: 6px 14px;
+  margin-left: 20px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+.status-box button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+
+.status-box.info {
+  background-color: #3498db;
+}
+
+.status-box.success {
+  background-color: #2ecc71;
+}
+
+.status-box.warning {
+  background-color: #f39c12;
+}
+
+.status-box.error {
+  background-color: #e74c3c;
+}
+
 
 @media (max-width: 640px) {
     .container {
