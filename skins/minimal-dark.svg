@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#121212"/>
+  
+  <!-- border -->
+  <rect x="100" y="100" width="1080" height="520" fill="none" stroke="#343a40" stroke-width="2"/>
+  
+  <!-- top & bottom lines -->
+  <line x1="200" y1="200" x2="1080" y2="200" stroke="#495057" stroke-width="1"/>
+  <line x1="200" y1="520" x2="1080" y2="520" stroke="#495057" stroke-width="1"/>
+  
+  <!-- title -->
+  <text x="200" y="170" fill="#f8f9fa" font-size="28" font-family="'Helvetica', sans-serif" font-weight="300">NoSkid Certificate</text>
+  
+  <!-- username -->
+  <text x="200" y="280" fill="#ced4da" font-size="18" font-family="'Helvetica', sans-serif">This goes to:</text>
+  <text x="200" y="330" fill="#ffffff" font-size="36" font-family="'Helvetica', sans-serif" font-weight="500">{{USER}}</text>
+  
+  <!-- username line -->
+  <line x1="200" y1="350" x2="600" y2="350" stroke="#495057" stroke-width="1"/>
+  
+  <!-- quote -->
+  <text x="200" y="400" fill="#ced4da" font-size="20" font-family="'Helvetica', sans-serif">You did the thing, and you did it well.</text>
+  <text x="200" y="430" fill="#adb5bd" font-size="18" font-family="'Helvetica', sans-serif">That's pretty cool if you ask me.</text>
+  
+  <!-- footer -->
+  <text x="200" y="490" fill="#868e96" font-size="14" font-family="'Helvetica', sans-serif">— The Internet</text>
+</svg>

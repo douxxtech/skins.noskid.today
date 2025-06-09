@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Skins - noskid.today</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css" rel="stylesheet">
+    <link href="assets/css/styles.css" rel="stylesheet">
+
+    <meta name="title" content="Certificate Skins - noskid.today" />
+    <meta name="description" content="Customize your noskid certificate in seconds !" />
+    <meta name="keywords" content="Certificate Skins - noskid.today, humor, internet culture, DDoS, online behavior, communication" />
+    <meta name="author" content="douxx.tech" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://is.notaskid.ong" />
+
+
+    <!-- OpenGraph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://is.notaskid.ong" />
+    <meta property="og:title" content="Certificate Skins - noskid.today" />
+    <meta property="og:description" content="Customize your noskid certificate in seconds !"/>
+    <meta property="og:image" content="https://raw.githubusercontent.com/douxxtech/noskid.today/refs/heads/main/assets/img/noskid-icon.png" />
+
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:url" content="https://is.notaskid.ong" />
+    <meta property="twitter:title" content="Certificate Skins - noskid.today" />
+    <meta property="twitter:description" content="Customize your noskid certificate in seconds !"/>
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/douxxtech/noskid.today/refs/heads/main/assets/img/noskid-icon.png" />
+
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/douxxtech/noskid.today/refs/heads/main/assets/img/noskid-icon.png" />
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/douxxtech/noskid.today/refs/heads/main/assets/img/noskid-icon.png" type="image/x-icon" />
+    <link rel="icon" href="https://raw.githubusercontent.com/douxxtech/noskid.today/refs/heads/main/assets/img/noskid-icon.png" type="image/x-icon" />
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="ri-image-line"></i>
+                <h1>Certificate Skins</h1>
+            </div>
+            <p class="subtitle">Generate custom certificate skins with your <a href="https://noskid.today" style="color: #2563eb; text-decoration: none;">noskid.today</a> certificate</p>
+        </div>
+
+        <div class="main-card">
+            <div class="upload-section">
+                <h2 class="upload-title">Upload Your Certificate</h2>
+                <p class="upload-description">
+                    Upload your noskid.today certificate image to generate custom skins
+                </p>
+
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">
+                        <i class="ri-upload-cloud-2-line"></i>
+                    </div>
+                    <div class="upload-text">Click to upload or drag and drop</div>
+                    <div class="upload-hint">PNG images up to 500KB</div>
+                </div>
+
+                <input type="file" id="fileInput" accept=".png">
+
+                <div class="file-selected" id="fileSelected">
+                    <i class="ri-file-text-line"></i>
+                    <div class="file-info">
+                        <div class="file-name" id="fileName"></div>
+                        <div class="file-size" id="fileSize"></div>
+                    </div>
+                    <button class="remove-file" id="removeFile">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="skins-section">
+                <h2 class="skins-title">Choose a Skin</h2>
+                
+                <div class="skins-loading" id="skinsLoading">
+                    <div class="spinner"></div>
+                    <p>Loading available skins...</p>
+                </div>
+
+                <div class="skins-grid" id="skinsGrid"></div>
+
+                <button class="download-btn" id="downloadBtn" disabled>
+                    <i class="ri-download-line"></i>
+                    Download Certificate
+                </button>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Generating your certificate...</p>
+                </div>
+
+                <div class="result" id="result">
+                    <i class="ri-checkbox-circle-line"></i>
+                    <h3>Certificate Generated!</h3>
+                    <p>Your custom certificate has been downloaded successfully.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/script/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+NSD LICENSE
+Version 1.0, May 2025
+(NON STANDARD DISTRIBUTION LICENSE)
+
+================================================================================
+
+Copyright (C) 2025 Douxx.tech <douxx@douxx.tech>
+
+Permission is hereby granted to copy and distribute verbatim copies of this 
+license document, but modification is not permitted without explicit written 
+consent from the copyright holder.
+
+================================================================================
+
+PREAMBLE
+
+    The NSD License (Non Standard Distribution License) is designed to provide
+    a balance between open source principles and commercial viability. This
+    license ensures that software remains accessible while protecting the
+    rights and interests of original authors and contributors.
+
+    This license grants users the freedom to use, study, and distribute the
+    software while maintaining proper attribution and ensuring that derivative
+    works remain under compatible terms.
+
+    The goal is to foster innovation and collaboration while respecting
+    intellectual property rights and encouraging responsible development
+    practices.
+
+================================================================================
+
+TERMS AND CONDITIONS
+
+1.  DEFINITIONS
+
+    a)  "License" refers to this NSD License version 1.0.
+
+    b)  "Work" refers to the copyrightable software, documentation, or other
+        materials licensed under this License.
+
+    c)  "You" refers to the individual or legal entity exercising rights
+        under this License.
+
+    d)  "Derivative Work" means a work based upon the Work, such as a
+        revision, modification, translation, abridgment, condensation, or
+        any other form in which the Work may be recast, transformed, or
+        adapted.
+
+    e)  "Distribution" means making copies of the Work available to third
+        parties through any medium.
+
+2.  GRANT OF RIGHTS
+
+    Subject to the terms and conditions of this License, You are hereby
+    granted a worldwide, royalty-free, non-exclusive license to:
+
+    a)  Use the Work for any purpose, including commercial purposes
+    b)  Study and examine the Work
+    c)  Make copies of the Work
+    d)  Distribute copies of the Work
+    e)  Create and distribute Derivative Works
+
+3.  CONDITIONS FOR USE AND DISTRIBUTION
+
+    a)  ATTRIBUTION: You must retain all copyright notices, this License,
+        and any other notices that were included with the Work. When
+        distributing the Work or Derivative Works, you must provide clear
+        attribution to the original author(s).
+
+    b)  LICENSE INCLUSION: Any distribution of the Work must include a copy
+        of this License or a clear reference to where it can be obtained.
+
+    c)  SOURCE CODE AVAILABILITY: If you distribute the Work in binary or
+        compiled form, you must either:
+        - Include the complete source code with the distribution, or
+        - Provide a written offer to supply the source code upon request
+          for a period of at least three years
+
+    d)  DERIVATIVE WORKS: Derivative Works must be clearly marked as such
+        and must include a prominent notice describing the modifications
+        made and the date of modification.
+
+4.  COPYLEFT PROVISION
+
+    Any Derivative Work you create must be licensed under terms that are
+    compatible with this License. You may add additional permissions but
+    may not impose additional restrictions that contradict the terms of
+    this License.
+
+5.  COMMERCIAL USE
+
+    Commercial use is explicitly permitted under this License, provided
+    all other terms and conditions are met. You may charge fees for
+    distribution, support, or warranty services.
+
+6.  NO WARRANTY
+
+    THE WORK IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. IN NO EVENT
+    SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES,
+    OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE,
+    ARISING FROM, OUT OF, OR IN CONNECTION WITH THE WORK OR THE USE OR OTHER
+    DEALINGS IN THE WORK.
+
+7.  TERMINATION
+
+    This License and the rights granted hereunder will terminate automatically
+    if You fail to comply with the terms herein. However, parties who have
+    received copies or rights from You under this License will not have their
+    licenses terminated provided they remain in full compliance.
+
+8.  MISCELLANEOUS
+
+    a)  If any provision of this License is held to be unenforceable, such
+        provision shall be reformed only to the extent necessary to make it
+        enforceable.
+
+    b)  This License represents the complete agreement concerning the subject
+        matter hereof.
+
+    c)  This License shall be governed by the laws of Switzerland's Juridiction,
+        excluding conflict of law provisions.
+
+9.  LICENSE VERSIONING
+
+    The copyright holder may publish revised versions of the NSD License.
+    Each version will be given a distinguishing version number. Unless
+    otherwise specified, you may use the Work under the terms of the version
+    of the License under which you originally received it.
+
+10. APPLICATION OF LICENSE
+
+    To properly apply this License to any work, the copyright holder must
+    include a copyright notice and license identification statement in each
+    source file or in a prominent location within the work's documentation.
+    
+    The required notice shall contain at minimum:
+    a)  A copyright statement identifying the copyright holder and year
+    b)  A clear statement that the work is licensed under this License
+    c)  Reference to where the complete License text may be obtained
+    
+    The standard format for such notice is:
+    
+        Copyright (C) [YEAR] [COPYRIGHT HOLDER NAME] <[CONTACT EMAIL]>
+        
+        This work is licensed under the NSD License v1.0.
+        You may obtain a copy of the License at: https://douxx.tech/NSD
+    
+    Failure to include proper license notices may affect the enforceability
+    of the rights granted herein and may result in copyright infringement
+    claims.
+
+================================================================================
+
+END OF TERMS AND CONDITIONS
