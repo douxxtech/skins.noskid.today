@@ -43,7 +43,7 @@ try {
 }
 
 function verifyCertificate($key) {
-    $apiUrl = "https://noskid.today/api/checkcert/?key=" . urlencode($key);
+    $apiUrl = "https://check.noskid.today/?key=" . urlencode($key);
     
     $ch = curl_init();
     curl_setopt_array($ch, [
@@ -103,7 +103,7 @@ function generateCustomCertificate($skinPath, $certData, $skinName, $originalKey
     $date = date('Y-m-d', strtotime($certData['creationDate']));
     $certNumber = $certData['certificate_number'];
     $percentage = $certData['percentage'];
-    $username = $certData['username'];
+    $username = $certData['nickname'];
     
     $replacements = [
         '{{DATE}}' => $date,
