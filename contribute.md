@@ -121,6 +121,7 @@ We're not super strict but:
 - Inappropriate content (racism, slurs, etc)
 - Code that breaks existing functionality
 - Huge changes without prior discussion
+- Brairot or temporary hyped themes (mango is an exception)
 
 ## Questions?
 
