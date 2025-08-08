@@ -170,7 +170,7 @@ function appendVerificationKeyToPng($pngPath, $verificationKey, $certData) {
     $randomChars = $verificationKey;
     
     $certNumber = $certData['certificate_number'];
-    $username = $certData['username'];
+    $username = $certData['nickname'];
     $certNumberData = "CERT-" . str_pad($certNumber, 5, '0', STR_PAD_LEFT) . "-" . $username;
     $certBasedChars = base64_encode($certNumberData);
     $certBasedChars = str_pad($certBasedChars, 64, '=', STR_PAD_RIGHT);
