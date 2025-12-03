@@ -305,7 +305,7 @@ async function handleDownload() {
         }
 
 
-        const response = await fetch(`/download?skin=${encodeURIComponent(selectedSkin)}&key=${encodeURIComponent(certData)}`);
+        const response = await fetch(`/download?skin=${encodeURIComponent(selectedSkin)}&key=${encodeURIComponent(certData.query)}`);
 
         if (response.ok) {
             const blob = await response.blob();
