@@ -6,9 +6,11 @@ const fileSize = document.getElementById('fileSize');
 const removeFile = document.getElementById('removeFile');
 const skinsGrid = document.getElementById('skinsGrid');
 const skinsLoading = document.getElementById('skinsLoading');
+const nskd = new NskdLbr();
 
 let selectedSkin = null;
-let certificateKey = null;
+let localSkin = null;
+let certData = null;
 
 loadSkins();
 
@@ -44,9 +46,21 @@ function handleFileSelect(e) {
     }
 }
 
-async function handleFile(file) {
-    if (file.type !== 'image/png') {
+async function handleFile(file, isLocalSkin = false) {
+    if (file.type !== 'image/png' && file.name.toLowerCase().endsWith('.png')) {
         showError('Please upload a PNG image file');
+        return;
+    }
+
+    if (isLocalSkin) {
+        localSkin = file;
+
+        fileName.textContent = file.name;
+        fileSize.textContent = formatFileSize(file.size);
+        uploadArea.style.display = 'none';
+        fileSelected.style.display = 'flex';
+
+        showProgress();
         return;
     }
 
@@ -57,8 +71,14 @@ async function handleFile(file) {
     }
 
     try {
-        const key = await extractNoskidKey(file);
-        certificateKey = key;
+        const result = await nskd.loadFromFile(file);
+
+        if (!result.valid) {
+            showError('Provided image doesn\'t seem to be a valid noskid.today certificate.');
+            return;
+        }
+
+        certData = result;
 
         fileName.textContent = file.name;
         fileSize.textContent = formatFileSize(file.size);
@@ -77,7 +97,7 @@ function clearFile() {
     uploadArea.style.display = 'block';
     fileSelected.style.display = 'none';
     fileInput.value = '';
-    certificateKey = null;
+    certData = null;
     showProgress();
 }
 
@@ -88,51 +108,6 @@ function formatFileSize(bytes) {
     const sizes = ['Bytes', 'KB', 'MB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-}
-
-async function extractNoskidKey(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = async function (e) {
-            try {
-                const extractedText = await extractTextFromPng(e.target.result);
-
-                if (!extractedText) {
-                    const arrayBuffer = e.target.result;
-                    const uint8Array = new Uint8Array(arrayBuffer);
-
-                    let content = '';
-                    for (let i = 0; i < uint8Array.length; i++) {
-                        content += String.fromCharCode(uint8Array[i]);
-                    }
-
-                    const keyPattern = /-----BEGIN NOSKID KEY-----\s*([a-f0-9]{64})/i;
-                    const match = content.match(keyPattern);
-
-                    if (match) {
-                        resolve(match[1]);
-                    } else {
-                        reject('No valid NOSKID key found in the image');
-                    }
-                } else {
-                    const keyPattern = /-*BEGIN NOSKID KEY-*\s*([a-f0-9]{64})/i;
-                    const match = extractedText.match(keyPattern);
-
-                    if (match) {
-                        resolve(match[1]);
-                    } else {
-                        reject('No valid NOSKID key pattern found in the extracted text');
-                    }
-                }
-            } catch (error) {
-                reject('Failed to extract key from image: ' + error.message);
-            }
-        };
-        reader.onerror = () => {
-            reject('Failed to read file');
-        };
-        reader.readAsArrayBuffer(file);
-    });
 }
 
 async function extractTextFromPng(arrayBuffer) {
@@ -220,6 +195,35 @@ function displaySkins(skins) {
         skinsGrid.appendChild(skinCard);
     });
 
+    const customImageCard = document.createElement('div');
+    customImageCard.className = 'skin-card contribute-card';
+    customImageCard.onclick = () => {
+        let input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/png';
+
+        input.onchange = async e => {
+            const file = e.target.files[0];
+            if (file) {
+                selectLocalSkin(file);
+            }
+        }
+
+        input.click();
+    }
+
+    customImageCard.innerHTML = `
+        <div class="contribute-content">
+            <i class="ri-image-add-line contribute-icon"></i>
+            <div class="contribute-text">
+                <div class="contribute-title">Your Own Image</div>
+                <div class="contribute-subtitle">Upload custom skin locally</div>
+            </div>
+        </div>
+    `;
+
+    skinsGrid.appendChild(customImageCard);
+
     const contributeCard = document.createElement('div');
     contributeCard.className = 'skin-card contribute-card';
     contributeCard.onclick = () => {
@@ -246,14 +250,62 @@ function selectSkin(skin, element) {
 
     element.classList.add('selected');
     selectedSkin = skin;
+    localSkin = null;
+    showProgress();
+}
+
+function selectLocalSkin(file) {
+    document.querySelectorAll('.skin-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+
+    const previewUrl = URL.createObjectURL(file);
+
+    let localCard = document.querySelector('.local-skin-card');
+    if (!localCard) {
+        localCard = document.createElement('div');
+        localCard.className = 'skin-card local-skin-card';
+        skinsGrid.insertBefore(localCard, document.querySelector('.contribute-card'));
+    }
+
+    localCard.classList.add('selected');
+    localCard.innerHTML = `
+        <img src="${previewUrl}" alt="Local skin" class="skin-preview">
+        <div class="skin-name">Your Custom Image</div>
+    `;
+
+    selectedSkin = null;
+    localSkin = file;
+    
     showProgress();
 }
 
 async function handleDownload() {
-    if (!certificateKey || !selectedSkin) return;
+    if (!certData) return;
+    if (!selectedSkin && !localSkin) return;
 
     try {
-        const response = await fetch(`download?skin=${encodeURIComponent(selectedSkin)}&key=${encodeURIComponent(certificateKey)}`);
+        if (localSkin) {
+            const skinBuffer = await localSkin.arrayBuffer();
+
+            const modifiedBuffer = addNoSkidKeyToPNG(skinBuffer, certData);
+
+            const blob = new Blob([modifiedBuffer], { type: 'image/png' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `noskid-${localSkin.name}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            showSuccess();
+            return;
+        }
+
+
+        const response = await fetch(`/download?skin=${encodeURIComponent(selectedSkin)}&key=${encodeURIComponent(certData)}`);
 
         if (response.ok) {
             const blob = await response.blob();
@@ -289,33 +341,31 @@ async function handleDownload() {
     } catch (error) {
         showError('Failed to download certificate: ' + error.message);
     } finally {
-        loading.style.display = 'none';
-        downloadBtn.style.display = 'block';
+        skinsLoading.style.display = 'none';
     }
 }
 
 function getStep() {
-    if (certificateKey && selectedSkin) {
-        return "Step 3/3";
-    } else if (certificateKey && !selectedSkin) {
-        return "Step 2/3";
-    } else if (!certificateKey && selectedSkin) {
-        return "Step 2/3";
-    } else if (!certificateKey && !selectedSkin) {
-        return "Step 1/3";
-    }
+    const hasCert = certData !== null;
+    const hasSkin = selectedSkin !== null || localSkin !== null;
+
+    if (hasCert && hasSkin) return "Step 3/3";
+    if (hasCert || hasSkin) return "Step 2/3";
+    return "Step 1/3";
 }
 
 function getComment() {
-    if (certificateKey && selectedSkin) {
-        return "Download your custom certificate.";
-    } else if (certificateKey && !selectedSkin) {
-        return "Select a skin for your certificate.";
-    } else if (!certificateKey && selectedSkin) {
-        return "Upload your noskid certificate.";
-    } else if (!certificateKey && !selectedSkin) {
-        return "Upload your noskid certificate.";
+    const hasCert = certData !== null;
+    const hasSkin = selectedSkin !== null || localSkin !== null;
+
+    if (hasCert && hasSkin) {
+        return localSkin
+            ? "Download your certificate with custom image."
+            : "Download your custom certificate.";
     }
+    if (hasCert) return "Select a skin for your certificate.";
+    if (hasSkin) return "Upload your noskid certificate.";
+    return "Upload your noskid certificate.";
 }
 
 function showProgress() {
@@ -347,10 +397,10 @@ function showSuccess() {
 
 function showError(message) {
     updateStatusBox({
-    type: 'error',
-    title: 'Error',
-    description: message
-});
+        type: 'error',
+        title: 'Error',
+        description: message
+    });
 }
 
 
@@ -370,10 +420,129 @@ function updateStatusBox({ type = 'info', title = '', description = '', buttonHt
     if (buttonHtml && buttonEl) {
         buttonEl.innerHTML = buttonHtml;
         buttonEl.style.display = 'inline-block';
-        buttonEl.onclick = buttonAction || (() => {});
-    } else if(buttonEl) {
+        buttonEl.onclick = buttonAction || (() => { });
+    } else if (buttonEl) {
         buttonEl.style.display = 'none';
     }
+}
+
+// local skin
+function readUint32(buffer, offset) {
+    const view = new DataView(buffer);
+    return view.getUint32(offset, false);
+}
+
+function writeUint32(buffer, offset, value) {
+    const view = new DataView(buffer);
+    view.setUint32(offset, value, false);
+}
+
+function calculateCRC32(data) {
+    let crc = 0xFFFFFFFF;
+    const table = [];
+
+    for (let i = 0; i < 256; i++) {
+        let c = i;
+        for (let j = 0; j < 8; j++) {
+            c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+        }
+        table[i] = c;
+    }
+
+    for (let i = 0; i < data.length; i++) {
+        crc = table[(crc ^ data[i]) & 0xFF] ^ (crc >>> 8);
+    }
+
+    return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+
+function createTextChunk(keyword, text) {
+    const keywordBytes = new TextEncoder().encode(keyword);
+    const textBytes = new TextEncoder().encode(text);
+    const data = new Uint8Array(keywordBytes.length + 1 + textBytes.length);
+
+    data.set(keywordBytes, 0);
+    data[keywordBytes.length] = 0;
+    data.set(textBytes, keywordBytes.length + 1);
+
+    const chunkType = new TextEncoder().encode('tEXt');
+    const lengthBuffer = new ArrayBuffer(4);
+    writeUint32(lengthBuffer, 0, data.length);
+
+    const crcData = new Uint8Array(4 + data.length);
+    crcData.set(chunkType, 0);
+    crcData.set(data, 4);
+
+    const crc = calculateCRC32(crcData);
+    const crcBuffer = new ArrayBuffer(4);
+    writeUint32(crcBuffer, 0, crc);
+
+    const chunk = new Uint8Array(4 + 4 + data.length + 4);
+    chunk.set(new Uint8Array(lengthBuffer), 0);
+    chunk.set(chunkType, 4);
+    chunk.set(data, 8);
+    chunk.set(new Uint8Array(crcBuffer), 8 + data.length);
+
+    return chunk;
+}
+
+function addNoSkidKeyToPNG(pngBuffer, certData) {
+    const verificationText = createVerificationText(certData.data, certData.query);
+    
+    const data = new Uint8Array(pngBuffer);
+    const chunks = [];
+    let offset = 8;
+
+    while (offset < data.length) {
+        const length = readUint32(pngBuffer, offset);
+        const chunkSize = 8 + length + 4;
+        const chunk = data.slice(offset, offset + chunkSize);
+        const type = String.fromCharCode(...data.slice(offset + 4, offset + 8));
+
+        if (type === 'IEND') {
+            const textChunk = createTextChunk('noskid-key', verificationText);
+            chunks.push(textChunk);
+        }
+
+        chunks.push(chunk);
+        offset += chunkSize;
+    }
+
+    let totalSize = 8;
+    for (const chunk of chunks) {
+        totalSize += chunk.length;
+    }
+
+    const newPng = new Uint8Array(totalSize);
+    newPng.set(data.slice(0, 8), 0);
+
+    let newOffset = 8;
+    for (const chunk of chunks) {
+        newPng.set(chunk, newOffset);
+        newOffset += chunk.length;
+    }
+
+    return newPng.buffer;
+}
+
+function createVerificationText(certData, certKey) {
+    const certNumber = certData.certificate_number;
+    const nickname = certData.nickname;
+    const certNumberData = `CERT-${certNumber.padStart(5, '0')}-${nickname}`;
+    const certBasedChars = btoa(certNumberData).padEnd(64, '=').substring(0, 64);
+    
+    const creationDate = certData.creationDate;
+    const timeData = `CREATED-${creationDate}`;
+    const timeBasedChars = btoa(timeData).padEnd(64, '=').substring(0, 64);
+    
+    const verificationText = 
+        `-----BEGIN NOSKID KEY-----\n` +
+        `${certKey}\n` +
+        `${certBasedChars}\n` +
+        `${timeBasedChars}\n` +
+        `-----END NOSKID KEY-----`;
+    
+    return verificationText;
 }
 
 
