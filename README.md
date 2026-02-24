@@ -1,6 +1,6 @@
 # Certificate Skins - noskid.today
 
-![togp thing](https://togp.xyz?owner=douxxtech&repo=skins.noskid.today&theme=json-dark-all&cache=false)
+![togp thing](https://togp.douxx.tech?owner=douxxtech&repo=skins.noskid.today&theme=json-dark-all&cache=false)
 
 We dont like boring certificates.
 
